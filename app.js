@@ -4,6 +4,7 @@ const appState = {
     users: JSON.parse(localStorage.getItem('users')) || [],
     documents: JSON.parse(localStorage.getItem('documents')) || [],
     reminders: JSON.parse(localStorage.getItem('reminders')) || [],
+    isLoginForm: true
 };
 
 // Initialize app
@@ -126,13 +127,11 @@ const getValidationErrors = (formData, isRegistration = false) => {
 
 // ============ AUTHENTICATION FUNCTIONS ============
 function renderAuthPage(container) {
-    let isLogin = true;
-    
     const renderAuthForm = () => {
         container.innerHTML = `
             <div class="auth-container">
                 <div class="auth-wrapper">
-                    ${isLogin ? renderLoginForm() : renderRegistrationForm()}
+                    ${appState.isLoginForm ? renderLoginForm() : renderRegistrationForm()}
                 </div>
             </div>
         `;
@@ -166,7 +165,7 @@ function renderAuthPage(container) {
             
             <div class="toggle-form">
                 <p>Don't have an account?</p>
-                <a href="#" onclick="event.preventDefault(); isLogin = false; renderAuthForm();">Create one now</a>
+                <a href="#" onclick="switchToRegistration()">Create one now</a>
             </div>
         </form>
     `;
@@ -277,13 +276,13 @@ function renderAuthPage(container) {
             
             <div class="toggle-form">
                 <p>Already have an account?</p>
-                <a href="#" onclick="event.preventDefault(); isLogin = true; renderAuthForm();">Login here</a>
+                <a href="#" onclick="switchToLogin()">Login here</a>
             </div>
         </form>
     `;
     
     const attachAuthEventListeners = () => {
-        if (isLogin) {
+        if (appState.isLoginForm) {
             const loginForm = document.getElementById('loginForm');
             if (loginForm) {
                 loginForm.addEventListener('submit', handleLogin);
@@ -305,6 +304,16 @@ function renderAuthPage(container) {
     renderAuthForm();
 }
 
+function switchToRegistration() {
+    appState.isLoginForm = false;
+    renderAuthPage(document.getElementById('app'));
+}
+
+function switchToLogin() {
+    appState.isLoginForm = true;
+    renderAuthPage(document.getElementById('app'));
+}
+
 function handleLogin(e) {
     e.preventDefault();
     
@@ -322,7 +331,7 @@ function handleLogin(e) {
     
     if (Object.keys(errors).length > 0) {
         if (errors.email) {
-            document.getElementById('loginEmailError').innerHTML = '❌ ' + errors.email;
+            document.getElementById('loginEmailError').innerHTML = '�� ' + errors.email;
             document.getElementById('loginEmail').classList.add('error');
         }
         if (errors.password) {
@@ -1121,6 +1130,7 @@ function handleLogout() {
     if (confirm('Are you sure you want to logout?')) {
         sessionStorage.removeItem('loggedInUser');
         appState.currentUser = null;
+        appState.isLoginForm = true;
         renderAuthPage(document.getElementById('app'));
     }
 }
