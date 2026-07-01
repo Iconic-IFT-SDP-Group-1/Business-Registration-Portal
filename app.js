@@ -82,8 +82,8 @@ function showLoginForm() {
     const container = document.getElementById('authFormContainer');
     container.innerHTML = `
         <div class="auth-header">
-            <div class="auth-logo">I</div>
-            <h1>Iconic Business Portal</h1>
+            <div class="auth-logo">G-1</div>
+            <h1>Iconic-IFT-SDP-Group-1</h1>
             <p>Digital Business Registration & Support</p>
         </div>
         
@@ -117,7 +117,7 @@ function showRegistrationForm() {
         <div class="auth-header">
             <div class="auth-logo">I</div>
             <h1>Create Your Account</h1>
-            <p>Join Iconic Business Portal</p>
+            <p>Join Iconic-IFT-SDP-Group-1</p>
         </div>
         
         <form id="registrationForm" onsubmit="handleRegistration(event)">
@@ -381,7 +381,7 @@ function initializeApp() {
             <div class="sidebar-logo">
                 <div class="logo-icon">I</div>
                 <div class="logo-text">
-                    <span class="logo-name">Iconic Business Portal</span>
+                    <span class="logo-name">Iconic-IFT-SDP-Group-1</span>
                     <span class="logo-tagline">Registration & Support</span>
                 </div>
             </div>
