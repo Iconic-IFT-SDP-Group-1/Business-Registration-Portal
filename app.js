@@ -78,7 +78,7 @@ function showRegistrationForm() {
             <p>Join Iconic Business Portal</p>
         </div>
         
-        <form id="registrationForm" onsubmit="handleRegistration(event)" style="max-height: 70vh; overflow-y: auto;">
+        <form id="registrationForm" onsubmit="handleRegistration(event)>
             <div id="registrationMessage"></div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
