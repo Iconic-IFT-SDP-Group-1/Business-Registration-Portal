@@ -19,6 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
         renderAuthPage();
     }
 });
+// (At the bottom of your initializeApp function, just before navigate is called)
+    
+    // Close sidebar when clicking on main content area (Mobile safety fallback)
+    document.getElementById('page-content').addEventListener('click', () => {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+        }
+    });
+
+    navigate('dashboard', document.querySelector('[data-page=dashboard]'));
+}
 
 // ============ AUTHENTICATION ============
 function renderAuthPage() {
