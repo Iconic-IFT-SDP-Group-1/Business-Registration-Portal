@@ -326,8 +326,8 @@ input, textarea, select { font-family: inherit; }
     gap: 8px;
 }
 
-.help-icon { font-size: 48px; }
-.help-title { font-size: 1.5rem; font-weight: 700; color: #FAF9F6; }
+.help-icon { font-size: 40px; }
+.help-title { font-size: 1.0rem; font-weight: 700; color: #FAF9F6; }
 .help-sub { font-size: 0.72rem; color: #FAF9F6; line-height: 1.4; }
 
 /* ===== MAIN WRAPPER ===== */
