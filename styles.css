@@ -326,9 +326,9 @@ input, textarea, select { font-family: inherit; }
     gap: 8px;
 }
 
-.help-icon { font-size: 40px; }
-.faqs-title { font-size: 1.0rem; font-weight: 700; color: #F5F5F5; }
-.help-sub { font-size: 0.9rem; color: #FAF9F6; line-height: 1.4; }
+.help-icon { font-size: 28px; }
+.help-title { font-size: 0.8rem; font-weight: 700; color: #fff; }
+.help-sub { font-size: 0.72rem; color: #AED6F1; line-height: 1.4; }
 
 /* ===== MAIN WRAPPER ===== */
 .main-wrapper {
