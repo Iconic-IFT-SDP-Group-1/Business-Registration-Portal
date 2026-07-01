@@ -300,7 +300,7 @@ body {
 }
 
 /* ==========================================================================
-   5. INTERIOR DASHBOARD CARD COMPONENTS & TABLES
+   5. INTERIOR DASHBOARD CARD COMPONENTS & TABLES (OPTIMIZED)
    ========================================================================== */
 .page-header { margin-bottom: 24px; }
 .page-title { font-size: 1.6rem; color: #1A3555; font-weight: 700; }
@@ -309,13 +309,34 @@ body {
 .card {
     background: #fff;
     border-radius: 12px;
-    padding: 24px;
+    padding: 20px; /* Reduced from 24px to save space */
     border: 1px solid #E2E8F0;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Forces cards to stay uniform in height */
 }
 
-.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+/* Added specific constraints for dashboard option titles */
+.card h3 {
+    font-size: 1.1rem; 
+    font-weight: 600;
+    color: #1A3555;
+    margin-bottom: 6px;
+}
+
+/* Added specific constraints for dashboard option descriptions */
+.card p {
+    font-size: 0.85rem;
+    color: #64748B;
+    margin-bottom: 14px;
+    line-height: 1.4;
+}
+
+/* Optimized grid breakpoints to prevent overflow on medium screens */
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 
 /* Buttons & Elements */
 .btn-primary { background: #2E5090; color: #fff; border: none; padding: 10px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
@@ -346,16 +367,6 @@ body {
 .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F1F5F9; font-size: 0.95rem; }
 .info-label { color: #64748B; font-weight: 500; }
 .info-value { color: #1E293B; font-weight: 600; }
-
-/* Modals Overlay */
-.modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-.modal-content { background: #fff; padding: 30px; border-radius: 12px; width: 100%; max-width: 500px; }
-
-/* Reminders System Layout */
-.reminder-card { background: #fff; padding: 16px; border-radius: 10px; border-left: 5px solid #2E5090; box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 12px; }
-.reminder-card.urgent { border-left-color: #EF4444; background: #FEF2F2; }
-.reminder-card.completed { border-left-color: #10B981; opacity: 0.7; }
-.reminder-date { font-size: 0.8rem; color: #64748B; margin-top: 4px; }
 
 /* ==========================================================================
    6. DYNAMIC FAQ INTERACTIVE COMPONENT
