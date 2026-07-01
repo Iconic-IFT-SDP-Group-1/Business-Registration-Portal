@@ -82,7 +82,7 @@ function showLoginForm() {
     const container = document.getElementById('authFormContainer');
     container.innerHTML = `
         <div class="auth-header">
-            <div class="auth-logo">G-1</div>
+            <div class="auth-logo">I</div>
             <h1>Iconic-IFT-SDP-Group-1</h1>
             <p>Digital Business Registration & Support</p>
         </div>
@@ -378,10 +378,12 @@ function initializeApp() {
     const app = document.getElementById('app');
     app.innerHTML = `
         <aside class="sidebar" id="sidebar">
+            <button class="sidebar-close" onclick="toggleSidebar()">×</button>
+            
             <div class="sidebar-logo">
                 <div class="logo-icon">I</div>
                 <div class="logo-text">
-                    <span class="logo-name">Iconic-IFT-SDP-Group-1</span>
+                    <span class="logo-name">Iconic Business Portal</span>
                     <span class="logo-tagline">Registration & Support</span>
                 </div>
             </div>
@@ -446,17 +448,13 @@ function initializeApp() {
     navigate('dashboard', document.querySelector('[data-page=dashboard]'));
 }
 
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('active');
-}
-
-function toggleUserMenu() {
-    document.getElementById('userDropdown').classList.toggle('show');
-}
-
 function navigate(page, element) {
     const dropdown = document.getElementById('userDropdown');
     if (dropdown) dropdown.classList.remove('show');
+    
+    // FIX: Automatically retract the sidebar panel layout when an item is chosen on mobile
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) sidebar.classList.remove('active');
     
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     if (element) element.classList.add('active');
