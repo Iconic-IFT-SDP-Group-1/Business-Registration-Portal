@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ============ AUTHENTICATION ============
 function renderAuthPage() {
-    const app = document.getElementById('app');
-    app.innerHTML = `
+    const pageContent = document.getElementById('page-content');
+    pageContent.innerHTML = `
         <div class="auth-page">
             <div class="auth-container">
                 <div class="auth-wrapper">
@@ -78,7 +78,7 @@ function showRegistrationForm() {
             <p>Join Iconic Business Portal</p>
         </div>
         
-        <form id="registrationForm" onsubmit="handleRegistration(event)">
+        <form id="registrationForm" onsubmit="handleRegistration(event)" style="max-height: 70vh; overflow-y: auto;">
             <div id="registrationMessage"></div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -382,7 +382,7 @@ function initializeApp() {
                 <div class="topbar-spacer"></div>
                 <div class="topbar-right">
                     <div class="user-profile" onclick="toggleUserMenu()">
-                        ${appState.currentUser.profilePic ? `<img src="${appState.currentUser.profilePic}" class="avatar" alt="Profile">` : '<div class="avatar">' + appState.currentUser.firstName[0] + '</div>'}
+                        ${appState.currentUser.profilePic ? `<img src="${appState.currentUser.profilePic}" class="avatar" alt="Profile">` : '<div class="avatar">' + appState.currentUser.firstName.charAt(0).toUpperCase() + '</div>'}
                         <div class="user-info">
                             <span class="user-name" id="topbarUserName">${appState.currentUser.firstName} ${appState.currentUser.lastName}</span>
                             <span class="user-email" id="topbarUserEmail">${appState.currentUser.email}</span>
@@ -667,7 +667,7 @@ function handleDocumentUpload(event) {
         userId: user.id,
         name: name,
         type: type,
-        status: 'Completed',
+        status: 'Pending',
         uploadedAt: new Date().toISOString()
     };
     
