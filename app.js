@@ -372,8 +372,8 @@ function initializeApp() {
                 <div>
                     <p class="FAQs">FAQs</p>
                     </a>
-                <a href="#" class="nav-item" data-page="profile" onclick="navigate('profile', this)">
-                    <p class="faqs-sub">Click for FAQs</p>
+                <a href="#" class="nav-item" data-page="FAQs" onclick="navigate('faqs', this)">
+                    <p class="help-sub">Click for FAQs</p>
                 </div>
             </div>
         </aside>
