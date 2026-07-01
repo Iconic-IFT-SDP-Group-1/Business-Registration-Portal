@@ -367,11 +367,13 @@ function initializeApp() {
                 </a>
             </nav>
 
-            <div class="sidebar-help">
-                <div class="help-icon">💬</div>
+            <div class="sidebar-faqs">
+                <div class="faqs-icon">💬</div>
                 <div>
-                    <p class="help-title">Need Help?</p>
-                    <p class="help-sub">Contact our support team</p>
+                    <p class="FAQs">FAQs</p>
+                    </a>
+                <a href="#" class="nav-item" data-page="profile" onclick="navigate('profile', this)">
+                    <p class="faqs-sub">Contact our support team</p>
                 </div>
             </div>
         </aside>
