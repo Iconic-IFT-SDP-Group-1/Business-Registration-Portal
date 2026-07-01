@@ -415,6 +415,10 @@ function navigate(page, element) {
     const dropdown = document.getElementById('userDropdown');
     if (dropdown) dropdown.classList.remove('show');
     
+    // FIX: Automatically close the sidebar on mobile after selecting a link
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) sidebar.classList.remove('active');
+    
     // Update active nav
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     if (element) element.classList.add('active');
