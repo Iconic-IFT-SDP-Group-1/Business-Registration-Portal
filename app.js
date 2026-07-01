@@ -4,8 +4,50 @@ const appState = {
     users: JSON.parse(localStorage.getItem('users')) || [],
     documents: JSON.parse(localStorage.getItem('documents')) || [],
     reminders: JSON.parse(localStorage.getItem('reminders')) || [],
-    isAuthenticated: false
+    isAuthenticated: false,
+    faqFilter: 'all',
+    faqQuery: ''
 };
+
+// ============ KNOWLEDGE BASE DATA (CAC & CORPORATE CONTEXT) ============
+const faqData = [
+    {
+        id: 'faq-1',
+        category: 'registration',
+        question: 'What is the structural difference between a Business Name and an LLC?',
+        answer: 'A Business Name (Sole Proprietorship/Partnership) leaves the owners personally liable for business obligations. A Limited Liability Company (LLC) establishes a separate legal entity, safeguarding personal assets behind corporate protection layers.'
+    },
+    {
+        id: 'faq-2',
+        category: 'registration',
+        question: 'How long does the corporate registration process usually take?',
+        answer: 'Name availability approval generally takes 24 to 48 hours. Once approved, final certificate generation and portal clearance take 3 to 7 working days, subject to regulatory review schedules.'
+    },
+    {
+        id: 'faq-3',
+        category: 'compliance',
+        question: 'What are Annual Returns and when must they be filed?',
+        answer: 'Annual Returns are mandatory yearly submissions confirming that your corporate records are current. Filing commences in the second year following incorporation and must be submitted to avoid late penalty assessments.'
+    },
+    {
+        id: 'faq-4',
+        category: 'documents',
+        question: 'What documents are required to initiate business onboarding?',
+        answer: 'You will need clear copies of government-issued identification cards for all prospective directors/partners, official signatures, profile photographs, and clear structural detail statements.'
+    },
+    {
+        id: 'faq-5',
+        category: 'technical',
+        question: 'Why does my uploaded document status read as "Pending"?',
+        answer: 'Every legal instrument uploaded undergoes manual document review by our compliance desk to maintain database integrity. Verification queues are typically processed within 24 operational hours.'
+    },
+    {
+        id: 'faq-6',
+        category: 'compliance',
+        question: 'How do I obtain a Tax Identification Number (TIN) post-registration?',
+        answer: 'Upon official completion of your entity registration, your business details are automatically synchronized across relevant tax portals to trigger automatic TIN assignments.'
+    }
+];
 
 // ============ INITIALIZE APP ============
 document.addEventListener('DOMContentLoaded', () => {
@@ -105,7 +147,7 @@ function showRegistrationForm() {
                 <label>Business Name</label>
                 <input type="text" id="businessName" placeholder="Your Business Name" required>
                 <div class="error-message" id="businessNameError"></div>
-            </div>
+                </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                 <div class="form-group">
@@ -227,20 +269,17 @@ function handleRegistration(event) {
         profilePic: appState.profilePicData || null
     };
     
-    // Validation
     const errors = validateRegistration(formData);
     if (Object.keys(errors).length > 0) {
         displayValidationErrors(errors);
         return;
     }
     
-    // Check if email exists
     if (appState.users.find(u => u.email === formData.email)) {
         showAuthError('registrationMessage', 'Email already registered');
         return;
     }
     
-    // Create user
     const newUser = {
         id: Date.now().toString(),
         firstName: formData.firstName,
@@ -313,7 +352,6 @@ function validateRegistration(data) {
     return errors;
 }
 
-// ============ RE-EVALUATED VIEW CONTROLLERS ============
 function displayValidationErrors(errors) {
     Object.keys(errors).forEach(field => {
         const errorEl = document.getElementById(field + 'Error');
@@ -323,6 +361,7 @@ function displayValidationErrors(errors) {
     });
 }
 
+// ============ RE-ADDED CORE HELPER UTILITIES ============
 function clearAuthErrors() {
     document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
 }
@@ -334,7 +373,7 @@ function showAuthError(elementId, message) {
     }
 }
 
-// ============ MAIN APPLICATION CONTAINER ============
+// ============ MAIN APPLICATION ============
 function initializeApp() {
     const app = document.getElementById('app');
     app.innerHTML = `
@@ -363,6 +402,9 @@ function initializeApp() {
                 <a href="#" class="nav-item" data-page="resources" onclick="navigate('resources', this)">
                     🎓 Resources
                 </a>
+                <a href="#" class="nav-item" data-page="faq" onclick="navigate('faq', this)">
+                    💡 Help & FAQs
+                </a>
                 <a href="#" class="nav-item" data-page="profile" onclick="navigate('profile', this)">
                     👤 My Profile
                 </a>
@@ -372,17 +414,18 @@ function initializeApp() {
                 <div class="help-icon">💬</div>
                 <div>
                     <p class="help-title">Need Help?</p>
-                    <p class="help-sub">Contact our support team</p>
+                    <p class="help-sub">Contact our support desk</p>
                 </div>
+                <button class="btn-help" onclick="navigate('faq', document.querySelector('[data-page=faq]'))">View FAQs</button>
             </div>
         </aside>
 
         <div class="main-wrapper">
             <header class="topbar">
-                <button class="menu-toggle" onclick="toggleSidebar(event)">☰</button>
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
                 <div class="topbar-spacer"></div>
                 <div class="topbar-right">
-                    <div class="user-profile" onclick="toggleUserMenu(event)">
+                    <div class="user-profile" onclick="toggleUserMenu()">
                         ${appState.currentUser.profilePic ? `<img src="${appState.currentUser.profilePic}" class="avatar" alt="Profile">` : '<div class="avatar">' + appState.currentUser.firstName[0] + '</div>'}
                         <div class="user-info">
                             <span class="user-name" id="topbarUserName">${appState.currentUser.firstName} ${appState.currentUser.lastName}</span>
@@ -400,47 +443,25 @@ function initializeApp() {
         </div>
     `;
     
-    // Safety Fallback: Close mobile sidebar when clicking on the main workspace background view
-    const mainWorkspace = document.querySelector('.main-wrapper');
-    if (mainWorkspace) {
-        mainWorkspace.addEventListener('click', (event) => {
-            if (!event.target.classList.contains('menu-toggle')) {
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar) sidebar.classList.remove('active');
-            }
-        });
-    }
-    
     navigate('dashboard', document.querySelector('[data-page=dashboard]'));
 }
 
-function toggleSidebar(event) {
-    if (event) event.stopPropagation();
+function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('active');
 }
 
-function toggleUserMenu(event) {
-    if (event) event.stopPropagation();
+function toggleUserMenu() {
     document.getElementById('userDropdown').classList.toggle('show');
 }
 
-// ============ INTERVIEW & PAGE ROUTING LAYER ============
 function navigate(page, element) {
-    // Close dropdown menu if open
     const dropdown = document.getElementById('userDropdown');
     if (dropdown) dropdown.classList.remove('show');
     
-    // MOBILE FIX: Force hide the responsive mobile menu layout right when clicking any view link
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar) sidebar.classList.remove('active');
-    
-    // Update active nav properties
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     if (element) element.classList.add('active');
     
-    // Render view targets safely
     const pageContent = document.getElementById('page-content');
-    if (!pageContent) return;
     
     switch(page) {
         case 'dashboard':
@@ -458,13 +479,16 @@ function navigate(page, element) {
         case 'resources':
             renderResources(pageContent);
             break;
+        case 'faq':
+            renderFAQ(pageContent);
+            break;
         case 'profile':
             renderProfile(pageContent);
             break;
     }
 }
 
-// ============ SUB-PAGE VIEW RENDERS ============
+// ============ PAGE RENDERERS ============
 function renderDashboard(container) {
     const user = appState.currentUser;
     container.innerHTML = `
@@ -500,9 +524,9 @@ function renderDashboard(container) {
                 <button class="btn-primary" onclick="navigate('compliance', document.querySelector('[data-page=compliance]'))">View</button>
             </div>
             <div class="card">
-                <h3>🎓 Resources</h3>
-                <p>Access helpful resources</p>
-                <button class="btn-primary" onclick="navigate('resources', document.querySelector('[data-page=resources]'))">View</button>
+                <h3>💡 Help Desk & FAQs</h3>
+                <p>Browse knowledge base solutions</p>
+                <button class="btn-primary" onclick="navigate('faq', document.querySelector('[data-page=faq]'))">View</button>
             </div>
         </div>
     `;
@@ -665,7 +689,6 @@ function showDocumentUploadForm() {
 
 function handleDocumentUpload(event) {
     event.preventDefault();
-    
     const user = appState.currentUser;
     const name = document.getElementById('docName').value;
     const type = document.getElementById('docType').value;
@@ -774,11 +797,9 @@ function showReminderForm() {
 
 function handleAddReminder(event) {
     event.preventDefault();
-    
-    const user = appState.currentUser;
     const newReminder = {
         id: Date.now().toString(),
-        userId: user.id,
+        userId: appState.currentUser.id,
         title: document.getElementById('reminderTitle').value,
         description: document.getElementById('reminderDescription').value,
         dueDate: document.getElementById('reminderDueDate').value,
@@ -847,6 +868,97 @@ function renderResources(container) {
     `;
 }
 
+// ============ NEW: DYNAMIC FAQ INTERACTIVE COMPONENT ============
+function renderFAQ(container) {
+    container.innerHTML = `
+        <div class="page-header">
+            <h1 class="page-title">Help Desk & Knowledge Base</h1>
+            <p class="page-sub">Find real-time answers regarding corporate filing frameworks</p>
+        </div>
+        
+        <div class="faq-search-container">
+            <h1>How can we help your business today?</h1>
+            <p>Search corporate registry terms or choose a category below for rapid troubleshooting</p>
+            <div class="faq-search-wrapper">
+                <span class="faq-search-icon">🔍</span>
+                <input type="text" id="faqSearchInput" class="faq-search-input" placeholder="Type keywords (e.g., LLC, return, pending, tax)..." oninput="handleFAQSearch(event)">
+            </div>
+        </div>
+        
+        <div class="faq-filters" id="faqFiltersContainer">
+            <button class="faq-filter-btn active" onclick="filterFAQCategory('all', this)">All Questions</button>
+            <button class="faq-filter-btn" onclick="filterFAQCategory('registration', this)">Registration</button>
+            <button class="faq-filter-btn" onclick="filterFAQCategory('documents', this)">Documents</button>
+            <button class="faq-filter-btn" onclick="filterFAQCategory('compliance', this)">Compliance</button>
+            <button class="faq-filter-btn" onclick="filterFAQCategory('technical', this)">Technical Support</button>
+        </div>
+        
+        <div class="faq-accordion" id="faqAccordionList"></div>
+    `;
+    
+    appState.faqFilter = 'all';
+    appState.faqQuery = '';
+    updateFAQList();
+}
+
+function updateFAQList() {
+    const listContainer = document.getElementById('faqAccordionList');
+    if (!listContainer) return;
+    
+    const filtered = faqData.filter(item => {
+        const matchCat = appState.faqFilter === 'all' || item.category === appState.faqFilter;
+        const matchQuery = item.question.toLowerCase().includes(appState.faqQuery.toLowerCase()) ||
+                           item.answer.toLowerCase().includes(appState.faqQuery.toLowerCase());
+        return matchCat && matchQuery;
+    });
+    
+    if (filtered.length === 0) {
+        listContainer.innerHTML = `
+            <div class="card" style="text-align: center; padding: 40px; color: #7F8C8D;">
+                <p style="font-size: 1.1rem; font-weight:600; margin-bottom: 6px;">No exact queries found</p>
+                <p>Try adjustment parameters or look into another root registry branch.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    listContainer.innerHTML = filtered.map(item => `
+        <div class="faq-item" id="${item.id}">
+            <div class="faq-question" onclick="toggleFAQ('${item.id}')">
+                <span>${item.question}</span>
+                <span class="faq-toggle-icon">▼</span>
+            </div>
+            <div class="faq-answer">
+                <p>${item.answer}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function handleFAQSearch(event) {
+    appState.faqQuery = event.target.value;
+    updateFAQList();
+}
+
+function filterFAQCategory(category, element) {
+    document.querySelectorAll('.faq-filter-btn').forEach(btn => btn.classList.remove('active'));
+    element.classList.add('active');
+    appState.faqFilter = category;
+    updateFAQList();
+}
+
+function toggleFAQ(id) {
+    const element = document.getElementById(id);
+    if (!element) return;
+    
+    const isOpen = element.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('open'));
+    
+    if (!isOpen) {
+        element.classList.add('open');
+    }
+}
+
 function renderProfile(container) {
     const user = appState.currentUser;
     container.innerHTML = `
@@ -890,7 +1002,7 @@ function renderProfile(container) {
     `;
 }
 
-// ============ ENGINE RUNTIME UTILITIES ============
+// ============ UTILITY FUNCTIONS ============
 function closeModal() {
     const modal = document.querySelector('.modal-overlay');
     if (modal) modal.remove();
