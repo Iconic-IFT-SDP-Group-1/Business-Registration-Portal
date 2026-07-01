@@ -22,6 +22,11 @@ input, textarea, select { font-family: inherit; }
     padding: 20px;
 }
 
+.auth-page ~ .sidebar,
+.auth-page ~ .topbar {
+    display: none !important;
+}
+
 .auth-container {
     display: flex;
     justify-content: center;
@@ -337,6 +342,22 @@ input, textarea, select { font-family: inherit; }
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+}
+
+/* Hide sidebar and adjust main-wrapper when on auth page */
+.page-content:has(.auth-page) ~ .sidebar,
+.page-content:has(.auth-page) ~ .topbar {
+    display: none !important;
+}
+
+.page-content:has(.auth-page) {
+    margin-left: -240px;
+}
+
+#page-content:has(.auth-page) {
+    width: 100vw;
+    margin-left: calc(-240px);
+    padding: 0;
 }
 
 /* ===== TOPBAR ===== */
