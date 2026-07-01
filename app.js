@@ -19,18 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderAuthPage();
     }
 });
-// (At the bottom of your initializeApp function, just before navigate is called)
-    
-    // Close sidebar when clicking on main content area (Mobile safety fallback)
-    document.getElementById('page-content').addEventListener('click', () => {
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar && sidebar.classList.contains('active')) {
-            sidebar.classList.remove('active');
-        }
-    });
-
-    navigate('dashboard', document.querySelector('[data-page=dashboard]'));
-}
 
 // ============ AUTHENTICATION ============
 function renderAuthPage() {
@@ -426,10 +414,6 @@ function navigate(page, element) {
     // Close dropdown
     const dropdown = document.getElementById('userDropdown');
     if (dropdown) dropdown.classList.remove('show');
-    
-    // FIX: Automatically close the sidebar on mobile after selecting a link
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar) sidebar.classList.remove('active');
     
     // Update active nav
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
