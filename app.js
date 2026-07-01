@@ -138,13 +138,13 @@ function showRegistrationForm() {
             
             <div class="form-group">
                 <label>Phone Number</label>
-                <input type="tel" id="phone" placeholder="+1 (555) 123-4567" required>
+                <input type="tel" id="phone" placeholder="+234 (80) 2552-4866" required>
                 <div class="error-message" id="phoneError"></div>
             </div>
             
             <div class="form-group">
                 <label>Business Registration Number</label>
-                <input type="text" id="registrationNumber" placeholder="e.g., REG123456" required>
+                <input type="text" id="registrationNumber" placeholder="e.g., BN/RC123456" required>
                 <div class="error-message" id="registrationNumberError"></div>
             </div>
             
