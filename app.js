@@ -667,7 +667,7 @@ function handleDocumentUpload(event) {
         userId: user.id,
         name: name,
         type: type,
-        status: 'Pending',
+        status: 'Completed',
         uploadedAt: new Date().toISOString()
     };
     
