@@ -78,19 +78,19 @@ function showRegistrationForm() {
             <p>Join Iconic Business Portal</p>
         </div>
         
-        <form id="registrationForm" onsubmit="handleRegistration(event)>
+        <form id="registrationForm" onsubmit="handleRegistration(event)" style="max-height: 70vh; overflow-y: auto;">
             <div id="registrationMessage"></div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                 <div class="form-group">
                     <label>First Name</label>
-                    <input type="text" id="firstName" placeholder="John" required>
+                    <input type="text" id="firstName" placeholder="Aminu" required>
                     <div class="error-message" id="firstNameError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label>Last Name</label>
-                    <input type="text" id="lastName" placeholder="Doe" required>
+                    <input type="text" id="lastName" placeholder="Mudi" required>
                     <div class="error-message" id="lastNameError"></div>
                 </div>
             </div>
@@ -114,7 +114,7 @@ function showRegistrationForm() {
                         <option value="">Select Industry</option>
                         <option value="Technology">Technology</option>
                         <option value="Healthcare">Healthcare</option>
-                        <option value="Finance">Finance</option>
+                        <option value="Agriculture">Agriculture</option>
                         <option value="Retail">Retail</option>
                         <option value="Manufacturing">Manufacturing</option>
                         <option value="Services">Services</option>
