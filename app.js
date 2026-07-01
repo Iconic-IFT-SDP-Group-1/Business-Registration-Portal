@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ============ AUTHENTICATION ============
 function renderAuthPage() {
-    const pageContent = document.getElementById('page-content');
-    pageContent.innerHTML = `
+    const app = document.getElementById('app');
+    app.innerHTML = `
         <div class="auth-page">
             <div class="auth-container">
                 <div class="auth-wrapper">
@@ -382,7 +382,7 @@ function initializeApp() {
                 <div class="topbar-spacer"></div>
                 <div class="topbar-right">
                     <div class="user-profile" onclick="toggleUserMenu()">
-                        ${appState.currentUser.profilePic ? `<img src="${appState.currentUser.profilePic}" class="avatar" alt="Profile">` : '<div class="avatar">' + appState.currentUser.firstName.charAt(0).toUpperCase() + '</div>'}
+                        ${appState.currentUser.profilePic ? `<img src="${appState.currentUser.profilePic}" class="avatar" alt="Profile">` : '<div class="avatar">' + appState.currentUser.firstName[0] + '</div>'}
                         <div class="user-info">
                             <span class="user-name" id="topbarUserName">${appState.currentUser.firstName} ${appState.currentUser.lastName}</span>
                             <span class="user-email" id="topbarUserEmail">${appState.currentUser.email}</span>
