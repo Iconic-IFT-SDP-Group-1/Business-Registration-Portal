@@ -313,6 +313,7 @@ function validateRegistration(data) {
     return errors;
 }
 
+// ============ RE-EVALUATED VIEW CONTROLLERS ============
 function displayValidationErrors(errors) {
     Object.keys(errors).forEach(field => {
         const errorEl = document.getElementById(field + 'Error');
@@ -333,7 +334,7 @@ function showAuthError(elementId, message) {
     }
 }
 
-// ============ MAIN APPLICATION ============
+// ============ MAIN APPLICATION CONTAINER ============
 function initializeApp() {
     const app = document.getElementById('app');
     app.innerHTML = `
@@ -378,10 +379,10 @@ function initializeApp() {
 
         <div class="main-wrapper">
             <header class="topbar">
-                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <button class="menu-toggle" onclick="toggleSidebar(event)">☰</button>
                 <div class="topbar-spacer"></div>
                 <div class="topbar-right">
-                    <div class="user-profile" onclick="toggleUserMenu()">
+                    <div class="user-profile" onclick="toggleUserMenu(event)">
                         ${appState.currentUser.profilePic ? `<img src="${appState.currentUser.profilePic}" class="avatar" alt="Profile">` : '<div class="avatar">' + appState.currentUser.firstName[0] + '</div>'}
                         <div class="user-info">
                             <span class="user-name" id="topbarUserName">${appState.currentUser.firstName} ${appState.currentUser.lastName}</span>
@@ -399,28 +400,47 @@ function initializeApp() {
         </div>
     `;
     
+    // Safety Fallback: Close mobile sidebar when clicking on the main workspace background view
+    const mainWorkspace = document.querySelector('.main-wrapper');
+    if (mainWorkspace) {
+        mainWorkspace.addEventListener('click', (event) => {
+            if (!event.target.classList.contains('menu-toggle')) {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) sidebar.classList.remove('active');
+            }
+        });
+    }
+    
     navigate('dashboard', document.querySelector('[data-page=dashboard]'));
 }
 
-function toggleSidebar() {
+function toggleSidebar(event) {
+    if (event) event.stopPropagation();
     document.getElementById('sidebar').classList.toggle('active');
 }
 
-function toggleUserMenu() {
+function toggleUserMenu(event) {
+    if (event) event.stopPropagation();
     document.getElementById('userDropdown').classList.toggle('show');
 }
 
+// ============ INTERVIEW & PAGE ROUTING LAYER ============
 function navigate(page, element) {
-    // Close dropdown
+    // Close dropdown menu if open
     const dropdown = document.getElementById('userDropdown');
     if (dropdown) dropdown.classList.remove('show');
     
-    // Update active nav
+    // MOBILE FIX: Force hide the responsive mobile menu layout right when clicking any view link
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) sidebar.classList.remove('active');
+    
+    // Update active nav properties
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     if (element) element.classList.add('active');
     
-    // Render page
+    // Render view targets safely
     const pageContent = document.getElementById('page-content');
+    if (!pageContent) return;
     
     switch(page) {
         case 'dashboard':
@@ -444,7 +464,7 @@ function navigate(page, element) {
     }
 }
 
-// ============ PAGE RENDERERS ============
+// ============ SUB-PAGE VIEW RENDERS ============
 function renderDashboard(container) {
     const user = appState.currentUser;
     container.innerHTML = `
@@ -606,7 +626,6 @@ function renderDocuments(container) {
 }
 
 function showDocumentUploadForm() {
-    const user = appState.currentUser;
     const form = `
         <div class="modal-overlay" onclick="closeModal()">
             <div class="modal-content" onclick="event.stopPropagation()">
@@ -871,7 +890,7 @@ function renderProfile(container) {
     `;
 }
 
-// ============ UTILITY FUNCTIONS ============
+// ============ ENGINE RUNTIME UTILITIES ============
 function closeModal() {
     const modal = document.querySelector('.modal-overlay');
     if (modal) modal.remove();
